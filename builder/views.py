@@ -6,6 +6,9 @@ import json
 def home(request):
     return render(request, 'home.html')
 
+def add_form_home(request):
+    return render(request, 'add_form_home.html')
+
 def add_form_parent(request):
     if request.method == 'POST':
         title = request.POST.get('title', '')
@@ -93,9 +96,10 @@ def form_view(request, unique_id):
 def form_submit(request, unique_id):
     form_parent_obj = get_object_or_404(FormParent, unique_id=unique_id)
     form_designs = FormDesign.objects.filter(form_parent=form_parent_obj)
+    profile = get_object_or_404(Profile, user = request.user)
     form_obj = FormObject(
         form_parent = form_parent_obj,
-        applicant = request.user.profile,
+        applicant = profile
 
     )
     form_obj.save()
@@ -128,8 +132,9 @@ def form_submit(request, unique_id):
                 )
                 form_int_field.save()
             elif field.file_field:
+
                 form_file_field = FormFileField(
-                    field_data = request.POST.get(str(field.pk)),
+                    field_data = request.FILES[str(field.pk)],
                     form_object = form_obj, 
                     label_name = request.POST.get('file' + str(field.pk))
 

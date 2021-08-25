@@ -63,8 +63,8 @@
         <div id="form_card" class="card mb-3">
 
           <div class="card-body">
-            <div class="d-flex justify-content-between">
-              <h5 class="card-title">{{field.label}}</h5>
+            <div id="label_div" class="d-flex justify-content-between">
+              <div class="card-title label" id="label">{{field.label}}</div>
 
 
             </div>
@@ -75,21 +75,21 @@
 
 
 
-            <input name="{{field.pk}}" type="text" class="form-control" id="form_field">
+            <input name="{{field.pk}}" type="text" class="form-control" id="form_field" required>
 
 
             {% elif field.big_text_field %}
             <input style="display: none;" type="text" name="txt{{field.pk}}" value="{{field.label}}">
 
-            <textarea name="{{field.pk}}" class="form-control" id="form_field" rows="3"></textarea>
+            <textarea name="{{field.pk}}" class="form-control" id="form_field" rows="3" required></textarea>
 
 
             {% elif field.integer_field %}
             <input style="display: none;" type="text" name="int{{field.pk}}" value="{{field.label}}">
-            <input name="{{field.pk}}" type="number" class="form-control" id="form_field">
+            <input name="{{field.pk}}" type="number" class="form-control" id="form_field" required>
 
             {% elif field.file_field %}
-            <input style="display: none;" type="text" name="file{{field.pk}}" value="{{field.label}}">
+            <input style="display: none;" type="text" name="file{{field.pk}}" value="{{field.label}}" required>
             <input name="{{field.pk}}" class="form-control" type="file">
 
             {% endif %}

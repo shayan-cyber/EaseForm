@@ -43,6 +43,18 @@
     #form_field:focus {
   box-shadow: none ;
 }
+
+#label > p > img {
+    max-width: 98% !important;
+    max-height: 200px !important;
+
+}
+#label_div{
+   background-color: aliceblue;
+   padding:1rem;
+   border-radius: 4px;
+   margin-bottom: 1.5rem;
+}
 </style>
 
 <body>
@@ -54,6 +66,13 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj"
         crossorigin="anonymous"></script>
+
+        <script>
+            let labels = document.getElementsByClassName("label");
+            for( i =0; i<labels.length; i++){
+                labels[i].innerHTML = labels[i].innerText
+            }
+        </script>
 </body>
 
 </html>

@@ -77,8 +77,8 @@
 
 
                                 <div class="card-body">
-                                    <div class="d-flex justify-content-between">
-                                        <h5 class="card-title">{{k.label_name}}</h5>
+                                    <div id="label_div" class="d-flex justify-content-between">
+                                        <div id="label" class="card-title label">{{k.label_name}}</div>
 
 
                                     </div>
@@ -103,7 +103,8 @@
                                         disabled>
 
                                     {% elif k.type_of == 'file' %}
-                                    <input class="form-control" type="file" value="{{k.field_data}}" disabled>
+                                    <!-- <input class="form-control" type="file" value="{{k.field_data}}" disabled> -->
+                                    <a class="btn btn-outline-secondary" href="{{k.field_data.url}}" download>Download <i class="bi bi-cloud-download"></i></a>
 
                                     {% endif %}
                                 </div>

@@ -8,7 +8,7 @@
     <div class="row">
         {% for form in form_parents %}
 
-        <div class="col-lg-4 col-sm-6">
+        <div class="col-lg-4 col-sm-6 mt-4">
 
 
 
@@ -20,7 +20,7 @@
                     <p class="card-text">{{form.description|truncatechars:100}}</p>
                     <div class="d-flex justify-content-between">
                         <div>
-                            <h6 style="margin-top:0.6rem"><small>{{form.time}}</small></h6>
+                            <h6 style="margin-top:0.6rem"><small>{{form.time|naturaltime}}</small></h6>
                         </div>
 
 

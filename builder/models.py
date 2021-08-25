@@ -20,7 +20,7 @@ class FormParent(models.Model):
 
 
 class FormDesign(models.Model):
-    label= models.CharField(max_length=200)
+    label= models.TextField()
     form_parent = models.ForeignKey(FormParent, on_delete=models.CASCADE)
     character_field = models.BooleanField(default = False)
     big_text_field = models.BooleanField(default = False)
@@ -43,7 +43,7 @@ class FormObject(models.Model):
 
     
 class FormCharacterField(models.Model):
-    label_name = models.CharField(max_length=200, blank=True)
+    label_name = models.TextField(blank=True)
     field_data = models.CharField(max_length=400)
     form_object = models.ForeignKey(FormObject, on_delete= models.CASCADE)
     time = models.DateTimeField(auto_now_add=True)
@@ -53,7 +53,7 @@ class FormCharacterField(models.Model):
         return self.form_object.form_parent.title
 
 class FormBigTextField(models.Model):
-    label_name = models.CharField(max_length=200, blank=True)
+    label_name = models.TextField(blank=True)
     field_data = models.TextField()
     form_object = models.ForeignKey(FormObject, on_delete= models.CASCADE)
     time = models.DateTimeField(auto_now_add=True)
@@ -63,7 +63,7 @@ class FormBigTextField(models.Model):
 
 
 class FormIntegerField(models.Model):
-    label_name = models.CharField(max_length=200, blank=True)
+    label_name = models.TextField(blank=True)
     field_data = models.BigIntegerField()
     form_object = models.ForeignKey(FormObject, on_delete= models.CASCADE)
     time = models.DateTimeField(auto_now_add=True)
@@ -72,7 +72,7 @@ class FormIntegerField(models.Model):
         return self.form_object.form_parent.title
 
 class FormFileField(models.Model):
-    label_name = models.CharField(max_length=200, blank=True)
+    label_name = models.TextField( blank=True)
     field_data = models.FileField(upload_to='fileData')
     form_object = models.ForeignKey(FormObject, on_delete= models.CASCADE)
     time = models.DateTimeField(auto_now_add=True)
@@ -80,4 +80,22 @@ class FormFileField(models.Model):
     def __str__(self):
         return self.form_object.form_parent.title
 
+
+"""
+
+
+class MCQField(models.Model):
+    label_name = models.TextField( blank=True)
+    field_data = models.IntegerField( pk of choice)
+    form_object = models.ForeignKey(FormObject, on_delete= models.CASCADE)
+    time = models.DateTimeField(auto_now_add=True)
+    type_of = models.CharField(max_length=30, default="MCQS")
+
+class Choice(models.Model):
+    name = models.CharField(max_length=100)
+    mcq = models.ForeignKey(MCQField, on_delete= models.CASCADE)
+
+
+
+"""
 
