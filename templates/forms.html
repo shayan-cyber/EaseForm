@@ -1,0 +1,98 @@
+{% extends "base1.html" %}
+{% load static %}
+{% load humanize %}
+
+{% block container %}
+
+<div class="container mt-2">
+    <div class="row">
+        {% for form in form_parents %}
+
+        <div class="col-lg-4 col-sm-6">
+
+
+
+            <div id="form_card" class="card form_border" style="width: 100%;">
+                <img style="height:150px; object-fit: cover; border-radius: 8px;" src="{% static 'banner.png' %}"
+                    class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">{{form.title}}</h5>
+                    <p class="card-text">{{form.description|truncatechars:100}}</p>
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <h6 style="margin-top:0.6rem"><small>{{form.time}}</small></h6>
+                        </div>
+
+
+                        <div class="dropdown">
+                            <a style="font-size: 1.5rem;" href="#" role="button" id="dropdownMenuLink"
+                                data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="bi bi-three-dots-vertical"></i>
+                            </a>
+
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                                <li><a class="dropdown-item py-2" href="{% url 'add_form_fields' form.pk %}"><strong><i
+                                                style="margin-right: 0.5rem; font-size: larger;"
+                                                class="bi bi-pencil"></i></strong> Edit</a></li>
+                                <li><a class="dropdown-item py-2" href="#" type="button" data-bs-toggle="modal"
+                                        data-bs-target="#alertModal{{forloop.counter}}"><strong><i
+                                                style="margin-right: 0.5rem; font-size: larger;"
+                                                class="bi bi-trash-fill"></i></strong> Remove</a></li>
+                                <li><a class="dropdown-item py-2" href="{% url 'responses' form.pk %}"><strong><i
+                                                style="margin-right: 0.5rem; font-size: larger;"
+                                                class="bi bi-ui-checks"></i></strong> Responses</a></li>
+                            </ul>
+                        </div>
+
+
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+
+        <!-- Alert Modal start -->
+
+        <!-- Modal -->
+        <div class="modal fade" id="alertModal{{forloop.counter}}" data-bs-backdrop="static" data-bs-keyboard="false"
+            tabindex="-1" aria-labelledby="alertModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="alertModalLabel">Move to trash ?</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                       
+                        <p>"{{form.title}}" will be moved to Drive trash and deleted forever.</p>
+                        <div class="d-flex flex-row-reverse ">
+                            <div class="row">
+                                <div class="col">
+                                    <button class="btn btn-outline-primary" data-bs-dismiss="modal">Cancel</button>
+
+                                </div>
+                                <div class="col">
+
+                                    <a class="btn btn-primary" href="{% url 'delete_form' form.pk %}">Remove</a>
+                                </div>
+                               
+                                
+                            </div>
+
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+
+
+        <!-- end -->
+        {% endfor %}
+    </div>
+
+</div>
+
+{% endblock %}

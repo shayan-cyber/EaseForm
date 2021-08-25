@@ -1,0 +1,202 @@
+{% extends "base1.html" %}
+{% load static %}
+
+{% block container %}
+
+<div class="container mt-5">
+
+
+    <div id="form_card" class="card mb-3">
+        <div style="background-color: #0d6efd; height:10px" class="card-img-top"></div>
+
+        <div class="card-body py-4 px-5">
+
+            <h3 class="card-title mt-3">{{data_dict|length}} Responses</h3>
+
+            <div class="float-end">
+
+                <div class="form-check form-switch">
+                    {% if form_parent.0.accept_responses %}
+                    <input class="form-check-input" type="checkbox" id="accept_responses" checked>
+                    {% else %}
+                    <input class="form-check-input" type="checkbox" id="accept_responses" >
+                      
+                    {% endif %}
+                   
+                    <label class="form-check-label" for="accept_responses"><small>Accepting responses</small></label>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+
+    <div class="accordion accordion-flush" id="accordionFlushExample">
+
+        <!-- item start -->
+        {% for i, fields in data_dict.items %}
+        <div style="border: 1px solid #dadce0; padding: 2rem; margin-bottom: 2rem; border-radius:8px"
+            class="accordion-item">
+            <h2 class="accordion-header" id="flush-headingOne">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#flush-collapse{{i.0|slice:'-1:'}}" aria-expanded="false"
+                    aria-controls="flush-collapseOne">
+                    <h4><i style="margin-bottom: 0.3rem;
+                        margin-right: 1rem;" class="bi bi-person-lines-fill"></i></h4>  {{i.0|slice:':-1'}}
+                </button>
+            </h2>
+
+
+            <div id="flush-collapse{{i.0|slice:'-1:'}}" class="accordion-collapse collapse"
+                aria-labelledby="flush-heading{{i.0|slice:'-1:'}}" data-bs-parent="#accordionFlushExample">
+                <div class="accordion-body">
+
+
+                    <div style="width:100%" class="container">
+                        <div style="max-height: 80vh;
+                        overflow-y: scroll;" id="card_parent" class="card  p-5">
+                            <div id="form_card" class="card mb-3">
+                                <img style="height:200px; object-fit: cover; border-radius: 8px;"
+                                    src="{% static 'banner.png' %}" class="card-img-top" alt="...">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{i.1.form_parent.title}}</h5>
+                                    <p class="card-text">{{i.1.form_parent.description|truncatechars:500}}</p>
+
+                                    <p class="card-text"><small
+                                            class="text-muted">{{i.1.applicant.user.username}}</small></p>
+                                </div>
+                            </div>
+
+
+                            {% for k, field in fields.items %}
+                            {% for i in field %}
+
+                            {% for k in i %}
+                            <div id="form_card" class="card mb-3">
+
+
+
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between">
+                                        <h5 class="card-title">{{k.label_name}}</h5>
+
+
+                                    </div>
+
+                                    {% if k.type_of == 'char' %}
+
+
+
+                                    <input type="text" class="form-control" id="form_field" value="{{k.field_data}}"
+                                        disabled>
+
+
+                                    {% elif k.type_of == 'txt' %}
+
+
+                                    <textarea class="form-control" id="form_field" rows="3"
+                                        disabled>{{k.field_data}}</textarea>
+
+
+                                    {% elif k.type_of == 'int' %}
+                                    <input type="number" class="form-control" id="form_field" value="{{k.field_data}}"
+                                        disabled>
+
+                                    {% elif k.type_of == 'file' %}
+                                    <input class="form-control" type="file" value="{{k.field_data}}" disabled>
+
+                                    {% endif %}
+                                </div>
+
+                            </div>
+                            {% endfor %}
+                            {% endfor %}
+                            {% endfor %}
+
+
+                        </div>
+                    </div>
+
+
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+    <!-- item end -->
+
+</div>
+</div>
+
+
+<!-- form parent id -->
+
+
+<input id="form_parent" style='display: none;' type="text" value="/accept_responses_toggle/{{form_parent.0.pk}}">
+{% endblock container %}
+
+{% block js %}
+<script>
+
+function getCookie(name) {
+      let cookieValue = null;
+      if (document.cookie && document.cookie !== '') {
+          const cookies = document.cookie.split(';');
+          for (let i = 0; i < cookies.length; i++) {
+              const cookie = cookies[i].trim();
+              // Does this cookie string begin with the name we want?
+              if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                  cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                  break;
+              }
+          }
+      }
+      return cookieValue;
+  }
+  const csrftoken = getCookie('csrftoken');
+
+
+
+
+//   fetch data
+
+
+
+    URL =  document.getElementById('form_parent').value
+    let toggle_check ;
+    check_toggle = document.getElementById('accept_responses');
+    check_toggle.onchange = () => {
+
+        if(check_toggle.checked){
+            console.log("checked");
+            toggle_check = true;
+        }else{
+            console.log("not");
+            toggle_check = false;
+        }
+        // console.log(check_toggle.value);
+
+
+        fetch(URL, {
+            method: 'POST',
+            credentials: 'same-origin',
+            headers: {
+                'Accept': 'application/json',
+                'X-Requested-With': 'XMLHttpRequest', //Necessary to work with request.is_ajax()
+                'X-CSRFToken': csrftoken,
+            },
+            body: JSON.stringify({ 'toggle_check': toggle_check }) //JavaScript object of data to POST
+        })
+            .then(response => {
+                return response.json() //Convert response to JSON
+            })
+            .then(data => {
+                //Perform actions with the response data from the view
+                console.log(data);
+            })
+    }
+
+</script>
+{% endblock js %}

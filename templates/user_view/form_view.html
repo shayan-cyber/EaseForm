@@ -1,0 +1,115 @@
+{% extends "user_view/base.html" %}
+{% load static %}
+{% block container %}
+
+<div class="container mt-5">
+  <div class="row d-flex justify-content-center">
+    <div class="col-sm-12 col-md-12 col-lg-8">
+      <div id="form_card" class="card mb-3">
+        <img style="height:200px; object-fit: cover; border-radius: 8px;" src="{% static 'banner.png' %}"
+          class="card-img-top" alt="...">
+        <div class="card-body">
+          <h5 class="card-title">{{form_parent.title}}</h5>
+          <p class="card-text">{{form_parent.description}}</p>
+          <span><i class="bi bi-person-fill"></i> <strong style="color: grey;">
+              {{request.user.username}}</strong></span>
+          <p class="card-text mt-2"><small class="text-muted">From : {{form_parent.builder.user.username}}</small></p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  {% if formobj %}
+
+  <div class="row d-flex justify-content-center">
+    <div class="col-sm-12 col-md-12 col-lg-8">
+      <div id="form_card" class="card mb-3">
+        <div style="background-color: #0d6efd; height:10px" class="card-img-top"></div>
+        
+        <div class="card-body py-4 px-5">
+          
+          <h3 class="card-title mt-3">Response is recorded !!</h3>
+          <p class="card-text mt-5">Thanks for submitting <strong>{{form_parent.title}}</strong></p>
+         
+        </div>
+      </div>
+
+    </div>
+  </div>
+    
+  {% elif form_parent.accept_responses == False %}
+  <div class="row d-flex justify-content-center">
+    <div class="col-sm-12 col-md-12 col-lg-8">
+      <div id="form_card" class="card mb-3">
+        <div style="background-color: #0d6efd; height:10px" class="card-img-top"></div>
+        
+        <div class="card-body py-4 px-5">
+          
+          <h3 class="card-title mt-3">Form not accepting any response</h3>
+         
+         
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  {% else %}
+  <div class="row d-flex justify-content-center">
+    <div class="col-sm-12 col-md-12 col-lg-8">
+      <form enctype="multipart/form-data" method="POST" action="{% url 'form_submit' form_parent.unique_id %}">{% csrf_token %}
+        {% for field in form_designs %}
+        <div id="form_card" class="card mb-3">
+
+          <div class="card-body">
+            <div class="d-flex justify-content-between">
+              <h5 class="card-title">{{field.label}}</h5>
+
+
+            </div>
+
+
+            {% if field.character_field %}
+            <input style="display: none;" type="text" name="char{{field.pk}}" value="{{field.label}}">
+
+
+
+            <input name="{{field.pk}}" type="text" class="form-control" id="form_field">
+
+
+            {% elif field.big_text_field %}
+            <input style="display: none;" type="text" name="txt{{field.pk}}" value="{{field.label}}">
+
+            <textarea name="{{field.pk}}" class="form-control" id="form_field" rows="3"></textarea>
+
+
+            {% elif field.integer_field %}
+            <input style="display: none;" type="text" name="int{{field.pk}}" value="{{field.label}}">
+            <input name="{{field.pk}}" type="number" class="form-control" id="form_field">
+
+            {% elif field.file_field %}
+            <input style="display: none;" type="text" name="file{{field.pk}}" value="{{field.label}}">
+            <input name="{{field.pk}}" class="form-control" type="file">
+
+            {% endif %}
+          </div>
+        </div>
+        {% endfor %}
+
+        <button class="btn btn-primary">Submit</button>
+      </form>
+
+    </div>
+  </div>
+
+
+  {% endif %}
+
+
+</div>
+
+<br>
+<br>
+
+{% endblock container %}

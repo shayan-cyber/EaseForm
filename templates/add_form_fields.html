@@ -1,0 +1,166 @@
+{% extends "base1.html" %}
+{% load static %}
+
+{% block container %}
+    
+
+<div class="container mt-4">
+
+    {% if formobjs %}
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Warning:"><use xlink:href="#exclamation-triangle-fill"/></svg>
+        <strong>Edit Not Possible!</strong> Already Responses are recorded, Form can't be edited
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+      
+    {% endif %}
+    <div class="row mt-5">
+        <div class="col-lg-4 col-md-12 mb-5">
+            <form method="POST" action="{% url 'add_form_fields' form_parent.pk %}">{% csrf_token %}
+
+                <div class="mb-3">
+                    <label for="label_name" class="form-label">Label</label>
+                    <input type="text" name="label_name" class="form-control" id="label_name"
+                        aria-describedby="labelHelp" required>
+                    <div id="labelHelp" class="form-text">Put the Label Name Here</div>
+                </div>
+
+
+                <select class="form-select form-select-lg mb-3" name="field_type" aria-label=".form-select-lg example">
+                    <option selected value="CF">Character Field</option>
+                    <option value="TF">Text Field</option>
+                    <option value="IF">Integer Field</option>
+                    <option value="FF">File Field</option>
+                </select>
+
+                <div class="d-grid gap-2">
+                    {% if formobjs %}
+                    <button type="button" class="btn btn-primary btn-sm"  data-bs-toggle="modal" data-bs-target="#alertModal">Set</button>
+                    {% else %}
+                    <button type="submit" class="btn btn-primary btn-sm" >Set</button>
+                    {% endif %}
+                   
+                </div>
+            </form>
+
+        </div>
+        <div class="col-lg-8 col-md-12 p-0">
+            <div style="width:100%" class="container ">
+                <div  style="max-height: 80vh;
+                overflow-y: scroll;" id="card_parent" class="card  p-5">
+                    <div id="form_card" class="card mb-3">
+                        <img style="height:200px; object-fit: cover; border-radius: 8px;" src="{% static 'banner.png' %}" class="card-img-top" alt="...">
+                        <div class="card-body">
+                          <h5 class="card-title">{{form_parent.title}}</h5>
+                          <p class="card-text">{{form_parent.description|truncatechars:500}}</p>
+                          <p class="card-text d-flex justify-content-between">
+                              <input style="display: none;" id="link" type="text" value="{% url 'form_view' form_parent.unique_id %}">
+                              <a style="word-break: break-all;" href="{% url 'form_view' form_parent.unique_id %}" >{% url 'form_view' form_parent.unique_id %}</a>
+
+                              <a onclick="myFunction()" href="#">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" fill="currentColor" class="bi bi-link-45deg" viewBox="0 0 16 16">
+                                    <path d="M4.715 6.542 3.343 7.914a3 3 0 1 0 4.243 4.243l1.828-1.829A3 3 0 0 0 8.586 5.5L8 6.086a1.002 1.002 0 0 0-.154.199 2 2 0 0 1 .861 3.337L6.88 11.45a2 2 0 1 1-2.83-2.83l.793-.792a4.018 4.018 0 0 1-.128-1.287z"/>
+                                    <path d="M6.586 4.672A3 3 0 0 0 7.414 9.5l.775-.776a2 2 0 0 1-.896-3.346L9.12 3.55a2 2 0 1 1 2.83 2.83l-.793.792c.112.42.155.855.128 1.287l1.372-1.372a3 3 0 1 0-4.243-4.243L6.586 4.672z"/>
+                                  </svg>
+                              </a>
+                          </p>
+                          <p class="card-text"><small class="text-muted">{{form_parent.builder.user.username}}</small></p>
+                        </div>
+                    </div>
+
+
+                    {% for field in form_designs %}
+                    <div id="form_card" class="card mb-3">
+        
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between">
+                                <h5 class="card-title">{{field.label}}</h5>
+                                <a href="{% url 'delete_form_field' field.pk %}">
+                                    <svg style="margin-bottom:1rem" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16">
+                                        <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z"/>
+                                    </svg>
+                                </a>
+
+                            </div>
+                          
+                            {% if field.character_field %}
+
+
+
+                                <input type="text" class="form-control" id="form_field">
+
+
+                                {% elif field.big_text_field %}
+
+
+                                <textarea class="form-control" id="form_field" rows="3"></textarea>
+
+
+                                {% elif field.integer_field %}
+                                <input type="number" class="form-control" id="form_field">
+
+                                {% elif field.file_field %}
+                                <input class="form-control" type="file" >
+
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% endfor %}
+
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+
+<!-- alert modal start -->
+
+<!-- Modal -->
+<div class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"  id="alertModal" tabindex="-1" aria-labelledby="alertModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="alertModalLabel">Alert</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <div class="alert alert-warning" role="alert">
+                <h4 class="alert-heading">Edit Not Possible!</h4>
+                <p>Already Responses are recorded, Form can't be edited</p>
+                
+              </div>
+        </div>
+       
+      </div>
+    </div>
+</div>
+
+
+<!-- alert modal end -->
+
+{% endblock container %}
+
+
+{% block js %}
+
+<script>
+    function myFunction() {
+  /* Get the text field */
+  var copyText = document.getElementById("link");
+
+  /* Select the text field */
+  copyText.select();
+  copyText.setSelectionRange(0, 99999); /* For mobile devices */
+
+   /* Copy the text inside the text field */
+  navigator.clipboard.writeText(copyText.value);
+
+  console.log(copyText.value);
+}
+</script>
+  
+{% endblock js %}

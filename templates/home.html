@@ -1,0 +1,23 @@
+{% extends "base1.html" %}
+{% load static %}
+
+{% block container %}
+<div class="container mt-3">
+    <form method="POST" action="{% url 'add_form_parent' %}"> {% csrf_token %}
+
+         <div class="mb-3">
+            <label for="formTitle" class="form-label">Form Title</label>
+            <input type="text" class="form-control" id="=formTitle" name="title" required>
+          </div>
+          <div class="mb-3">
+            <label for="fromDescription" class="form-label">Form Description</label>
+            <textarea class="form-control" name="description" id="formDescription"rows="3" required></textarea>
+          </div>
+
+          <button type="submit" class="btn btn-primary">Proceed</button>
+
+    </form>
+    
+</div>
+  
+{% endblock container %}
