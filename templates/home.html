@@ -1,3 +1,4 @@
+{% load static %}
 <!doctype html>
 <html lang="en" class="h-100">
 
@@ -96,6 +97,10 @@
         font-size: 3.5rem;
       }
     }
+    #logo{
+    height:3rem;
+    margin-right: 0.3rem;
+}
   </style>
 
 
@@ -108,7 +113,7 @@
   <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
     <header class="mb-auto">
       <div>
-        <h3 class="float-md-start mb-0">EaseForm</h3>
+        <h3 class="float-md-start mb-0"> <img id="logo" src="{% static 'logo.png' %}" alt=""> EaseForm</h3>
         <nav class="nav nav-masthead justify-content-center float-md-end">
           <a class="nav-link active" aria-current="page" href="#">Home</a>
           <a class="nav-link" href="{% url 'add_form_home' %}">Make Form</a>
@@ -122,23 +127,11 @@
       <p class="lead">
         EaseForm is an online modern form builder that helps you create amazing on-line, mobile ready forms.
       </p>
-      <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="60" height="60" viewBox="0 0 172 172"
-        style=" fill:#000000;">
-        <g fill="none" fill-rule="nonzero" stroke="none" stroke-width="1" stroke-linecap="butt" stroke-linejoin="miter"
-          stroke-miterlimit="10" stroke-dasharray="" stroke-dashoffset="0" font-family="none" font-weight="none"
-          font-size="none" text-anchor="none" style="mix-blend-mode: normal">
-          <path d="M0,172v-172h172v172z" fill="none"></path>
-          <g fill="#ffffff">
-            <path
-              d="M99.4375,6.7725c-0.14781,0.02688 -0.29562,0.06719 -0.43,0.1075h-59.4475c-6.58437,0 -12.04,5.36156 -12.04,11.9325v132.225c0,7.75344 6.42313,14.0825 14.19,14.0825h88.58c7.76688,0 14.19,-6.32906 14.19,-14.0825v-98.7925c0.09406,-0.45687 0.09406,-0.94062 0,-1.3975v-0.9675c0.02688,-0.91375 -0.3225,-1.81406 -0.9675,-2.4725l-39.56,-39.56c-0.65844,-0.645 -1.55875,-0.99437 -2.4725,-0.9675h-1.075c-0.30906,-0.08062 -0.645,-0.12094 -0.9675,-0.1075zM39.56,13.76h56.76v28.7025c0,6.92031 5.65719,12.5775 12.5775,12.5775h28.7025v95.9975c0,4.01781 -3.25187,7.2025 -7.31,7.2025h-88.58c-4.05812,0 -7.31,-3.18469 -7.31,-7.2025v-132.225c0,-2.83531 2.27094,-5.0525 5.16,-5.0525zM103.2,16.985l31.175,31.175h-25.4775c-3.21156,0 -5.6975,-2.48594 -5.6975,-5.6975zM58.48,86c-1.89469,0 -3.44,1.54531 -3.44,3.44c0,1.89469 1.54531,3.44 3.44,3.44c1.89469,0 3.44,-1.54531 3.44,-3.44c0,-1.89469 -1.54531,-3.44 -3.44,-3.44zM72.24,86v6.88h41.28v-6.88zM58.48,103.2c-1.89469,0 -3.44,1.54531 -3.44,3.44c0,1.89469 1.54531,3.44 3.44,3.44c1.89469,0 3.44,-1.54531 3.44,-3.44c0,-1.89469 -1.54531,-3.44 -3.44,-3.44zM72.24,103.2v6.88h41.28v-6.88zM58.48,120.4c-1.89469,0 -3.44,1.54531 -3.44,3.44c0,1.89469 1.54531,3.44 3.44,3.44c1.89469,0 3.44,-1.54531 3.44,-3.44c0,-1.89469 -1.54531,-3.44 -3.44,-3.44zM72.24,120.4v6.88h41.28v-6.88z">
-            </path>
-          </g>
-        </g>
-      </svg>
+      <img style="height:14rem" src="{% static 'logo.png' %}" alt="">
       <br>
       <br>
       <p class="lead">
-        <a href="{% url 'add_form_home' %}" class="btn btn-lg btn-secondary fw-bold border-white bg-white">Make Form</a>
+        <a href="{% url 'add_form_home' %}" class="btn btn-lg btn-secondary fw-bold border-white bg-white"> <img style="margin-bottom: 0.3rem;" src="https://img.icons8.com/ios/30/000000/google-forms.png"/> Make Form</a>
       </p>
     </main>
 

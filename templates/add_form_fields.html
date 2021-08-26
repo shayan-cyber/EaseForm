@@ -18,33 +18,60 @@
     {% endif %}
     <div class="row mt-5">
         <div class="col-lg-6 col-sm-12 mb-5">
-            <form method="POST" action="{% url 'add_form_fields' form_parent.pk %}">{% csrf_token %}
+            <form method="POST" action="{% url 'add_form_fields' form_parent.pk %}" id="myForm">{% csrf_token %}
 
                 <div class="mb-3">
                     <label for="mytextarea" class="form-label">Label</label>
 
-                    <textarea class="form-control" name="label_name" id="mytextarea" cols="30" rows="6"></textarea>
+                    <textarea class="form-control" name="label_name" id="mytextarea" cols="30" rows="6" ></textarea>
                     <div id="labelHelp" class="form-text">Put the Label Name Here</div>
                 </div>
 
 
-                <select class="form-select form-select-lg mb-3" name="field_type" aria-label=".form-select-lg example">
+                <select id="select" class="form-select form-select-lg mb-3" name="field_type" aria-label=".form-select-lg example">
                     <option selected value="CF">Character Field</option>
                     <option value="TF">Text Field</option>
                     <option value="IF">Integer Field</option>
                     <option value="FF">File Field</option>
+                    <option value="MF">Multiple Choice Field</option>
                 </select>
 
-                <div class="d-grid gap-2">
-                    {% if formobjs %}
-                    <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
-                        data-bs-target="#alertModal">Set</button>
-                    {% else %}
-                    <button type="submit" class="btn btn-primary btn-sm">Set</button>
-                    {% endif %}
 
-                </div>
+              
+                
+
+                <input style="display: none;" id="options_value" name="options_value" type="text" >
+               
             </form>
+
+            <div style="display:none" id="options">
+                <div class="mb-3 mt-2">
+                    <label for="optionName" class="form-label">Option Name</label>
+                    <input type="text" class="form-control" id="optionName" value="">
+                </div>
+
+                <button id="optionset" class="btn btn-info mt-2 mb-3">Set</button>
+                <div id="option-list" class="list-group">
+                    <a href="#" class="list-group-item list-group-item-action active" aria-current="true">
+                      Options
+                    </a>
+                   
+                    
+                </div>
+               
+
+            </div>
+            <br>
+            <div class="d-grid gap-2">
+                {% if formobjs %}
+                <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
+                    data-bs-target="#alertModal">Set</button>
+                {% else %}
+                <button type="submit" class="btn btn-primary btn-sm" form="myForm">Set</button>
+                {% endif %}
+
+            </div>
+           
 
         </div>
         <div class="col-lg-6 col-sm-12 p-0">
@@ -53,7 +80,7 @@
                 overflow-y: scroll;" id="card_parent" class="card  p-2">
                     <div id="form_card" class="card mb-3">
                         <img style="height:200px; object-fit: cover; border-radius: 8px;"
-                            src="{% static 'banner.png' %}" class="card-img-top" alt="...">
+                            src="{{form_parent.banner_img.url}}" class="card-img-top" alt="...">
                         <div class="card-body">
                             <h5 class="card-title">{{form_parent.title}}</h5>
                             <p class="card-text">{{form_parent.description|truncatechars:500}}</p>
@@ -112,6 +139,23 @@
 
                             {% elif field.file_field %}
                             <input class="form-control" type="file">
+
+                            {% elif field.mcq_field %}
+                            <ul class="list-group list-group-flush">
+                            {% for i in field.choice_set.all %}
+                            
+                            
+
+                            <li class="list-group-item">
+                            <div class="form-check mt-2">
+                                <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
+                                <label class="form-check-label" for="flexRadioDefault1">
+                                    {{i}}
+                                </label>
+                            </div>
+                            </li>
+                            {% endfor %}
+                            </ul>
 
                             {% endif %}
                         </div>
@@ -174,6 +218,52 @@
         console.log(copyText.value);
     }
 </script>
+
+<!-- js for mcq start -->
+<script>
+    var element = document.getElementById("select");
+    var opts = []
+    var option_list = document.getElementById("option-list") 
+    
+    element.addEventListener("change", ()=>{
+        console.log(element.value);
+        if( element.value == 'MF'){
+            console.log("hello");
+            document.getElementById("options").style.display = "block";
+            setbtn = document.getElementById("optionset")
+            
+
+            // on click 
+            setbtn.addEventListener("click",() =>{
+                // console.log("click");
+               var opt =  document.getElementById("optionName").value
+              
+
+                if(opt == ""){
+                    alert("put the option value !!")
+                }else{
+                    console.log(opt);
+                    opts.push(opt);
+                    console.log(opts);
+                    var item = `<a href="#" class="list-group-item list-group-item-action">${opt}</a>`
+                    option_list.insertAdjacentHTML("beforeend", item);
+                    document.getElementById("optionName").value = ''
+                    document.getElementById("options_value").value = opts
+
+
+                }
+
+
+            })
+
+        }else{
+            document.getElementById("options").style.display = "none";
+
+        }
+    })
+</script>
+
+<!-- js for mcq end -->
 
 
 

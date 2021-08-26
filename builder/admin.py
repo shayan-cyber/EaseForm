@@ -10,4 +10,6 @@ admin.site.register(FormCharacterField)
 admin.site.register(FormBigTextField)
 admin.site.register(FormIntegerField)
 admin.site.register(FormFileField)
+admin.site.register(MCQField)
+admin.site.register(Choice)
 

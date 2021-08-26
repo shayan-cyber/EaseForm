@@ -14,6 +14,7 @@ class FormParent(models.Model):
     time = models.DateTimeField(auto_now_add=True)
     unique_id = models.UUIDField(default=uuid.uuid4, editable=False)
     accept_responses = models.BooleanField(default=True)
+    banner_img = models.ImageField(upload_to = 'banners', default='banner.png', blank=True, null=True)
 
     def __str__(self):
         return self.title
@@ -26,6 +27,7 @@ class FormDesign(models.Model):
     big_text_field = models.BooleanField(default = False)
     integer_field = models.BooleanField(default = False)
     file_field = models.BooleanField(default = False)
+    mcq_field = models.BooleanField(default = False)
     def __str__(self):
         return self.form_parent.title
 
@@ -81,21 +83,26 @@ class FormFileField(models.Model):
         return self.form_object.form_parent.title
 
 
-"""
+
 
 
 class MCQField(models.Model):
     label_name = models.TextField( blank=True)
-    field_data = models.IntegerField( pk of choice)
+    field_data = models.IntegerField()
     form_object = models.ForeignKey(FormObject, on_delete= models.CASCADE)
     time = models.DateTimeField(auto_now_add=True)
-    type_of = models.CharField(max_length=30, default="MCQS")
+    type_of = models.CharField(max_length=30, default="Single")
+    form_design = models.ForeignKey(FormDesign, on_delete=models.CASCADE)
+    def __str__(self):
+        return self.form_object.form_parent.title
 
 class Choice(models.Model):
     name = models.CharField(max_length=100)
-    mcq = models.ForeignKey(MCQField, on_delete= models.CASCADE)
+    mcq_parent = models.ForeignKey(FormDesign, on_delete= models.CASCADE)
+    def __str__(self):
+        return self.name
 
 
 
-"""
+
 

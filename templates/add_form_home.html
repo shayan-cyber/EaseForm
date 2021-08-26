@@ -2,22 +2,40 @@
 {% load static %}
 
 {% block container %}
-<div class="container mt-3">
-    <form method="POST" action="{% url 'add_form_parent' %}"> {% csrf_token %}
-
-         <div class="mb-3">
-            <label for="formTitle" class="form-label">Form Title</label>
-            <input type="text" class="form-control" id="=formTitle" name="title" required>
-          </div>
-          <div class="mb-3">
-            <label for="fromDescription" class="form-label">Form Description</label>
-            <textarea class="form-control" name="description" id="formDescription"rows="3" required></textarea>
-          </div>
-
-          <button type="submit" class="btn btn-primary">Proceed</button>
-
-    </form>
+<div class="container mt-5">
+  <div style="border-radius: 8px;" class="card border-primary mb-3 box-shadow">
+    <div class="card-header">Enter The Form Details</div>
+    <div class="card-body text-primary">
     
+      
+      <form class="py-2 px-3" enctype="multipart/form-data" method="POST" action="{% url 'add_form_parent' %}"> {% csrf_token %}
+
+        <div class="mb-3 mt-2">
+          <label for="form_field" class="form-label">Form Title</label>
+          <input type="text" class="form-control" id = "form_field" name="title" required>
+        </div>
+        <div class="mb-3 mt-2">
+          <label for="form_field" class="form-label">Form Description</label>
+          <textarea class="form-control" name="description" id="form_field" rows="3" required></textarea>
+        </div>
+        <br>
+        <div class=" mt-2">
+          <label for="formFile" class="form-label">Upload form banner</label>
+          <input class="form-control" type="file" id="formFile" name="banner">
+        </div>
+        <br>
+        <div class="d-grid gap-2  mt-4">
+          <button style="border-radius: 2px;" type="submit" class="btn btn-primary">Proceed</button>
+
+        </div>
+       
+    
+      </form>
+      
+    </div>
+  </div>
+ 
+
 </div>
-  
+
 {% endblock container %}

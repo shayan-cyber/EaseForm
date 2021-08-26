@@ -6,7 +6,7 @@
   <div class="row d-flex justify-content-center">
     <div class="col-sm-12 col-md-12 col-lg-8">
       <div id="form_card" class="card mb-3">
-        <img style="height:200px; object-fit: cover; border-radius: 8px;" src="{% static 'banner.png' %}"
+        <img style="height:200px; object-fit: cover; border-radius: 8px;" src="{{form_parent.banner_img.url}}"
           class="card-img-top" alt="...">
         <div class="card-body">
           <h5 class="card-title">{{form_parent.title}}</h5>
@@ -26,29 +26,29 @@
     <div class="col-sm-12 col-md-12 col-lg-8">
       <div id="form_card" class="card mb-3">
         <div style="background-color: #0d6efd; height:10px" class="card-img-top"></div>
-        
+
         <div class="card-body py-4 px-5">
-          
+
           <h3 class="card-title mt-3">Response is recorded !!</h3>
           <p class="card-text mt-5">Thanks for submitting <strong>{{form_parent.title}}</strong></p>
-         
+
         </div>
       </div>
 
     </div>
   </div>
-    
+
   {% elif form_parent.accept_responses == False %}
   <div class="row d-flex justify-content-center">
     <div class="col-sm-12 col-md-12 col-lg-8">
       <div id="form_card" class="card mb-3">
         <div style="background-color: #0d6efd; height:10px" class="card-img-top"></div>
-        
+
         <div class="card-body py-4 px-5">
-          
+
           <h3 class="card-title mt-3">Form not accepting any response</h3>
-         
-         
+
+
         </div>
       </div>
 
@@ -91,6 +91,24 @@
             {% elif field.file_field %}
             <input style="display: none;" type="text" name="file{{field.pk}}" value="{{field.label}}" required>
             <input name="{{field.pk}}" class="form-control" type="file">
+
+            {% elif field.mcq_field %}
+            <input style="display: none;" type="text" name="mcq{{field.pk}}" value="{{field.label}}" required>
+            <ul class="list-group list-group-flush">
+              {% for i in field.choice_set.all %}
+              
+              
+
+              <li class="list-group-item">
+              <div class="form-check mt-2">
+                  <input class="form-check-input" type="radio" name="flexRadioDefault{{field.pk}}" value="{{i.pk}}" id="flexRadioDefault1">
+                  <label class="form-check-label" for="flexRadioDefault1">
+                      {{i}}
+                  </label>
+              </div>
+              </li>
+              {% endfor %}
+              </ul>
 
             {% endif %}
           </div>

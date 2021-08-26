@@ -6,6 +6,9 @@
 
 <div class="container mt-2">
     <div class="row">
+        {% if form_parents %}
+          
+        
         {% for form in form_parents %}
 
         <div class="col-lg-4 col-sm-6 mt-4">
@@ -13,7 +16,7 @@
 
 
             <div id="form_card" class="card form_border" style="width: 100%;">
-                <img style="height:150px; object-fit: cover; border-radius: 8px;" src="{% static 'banner.png' %}"
+                <img style="height:150px; object-fit: cover; border-radius: 8px;" src="{{form.banner_img.url}}"
                     class="card-img-top" alt="...">
                 <div class="card-body">
                     <h5 class="card-title">{{form.title}}</h5>
@@ -91,6 +94,12 @@
 
         <!-- end -->
         {% endfor %}
+
+        {% else %}
+        <img style="height: 70vh; margin-top:2vh" src="{% static 'no_forms.svg' %}" alt="">
+        <center><h4 style="margin-top: -2rem;">  <strong style="font-weight: 900; opacity: 1; color: #6c63ff;">  Oopps !  No Form Yet</strong></h4></center>
+        <center><a class="btn btn-light btn-lg mt-2" href="{% url 'add_form_home' %}"><img style="margin-bottom: 0.3rem;" src="https://img.icons8.com/ios/30/000000/google-forms.png"/>  Make One</a></center>
+        {% endif %}
     </div>
 
 </div>
