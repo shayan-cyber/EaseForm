@@ -256,7 +256,7 @@ def accept_responses_toggle(request, pk):
 
 @login_required(login_url='/login_page')
 def forms(request):
-    form_parents = FormParent.objects.filter(builder = request.user.profile)
+    form_parents = FormParent.objects.filter(builder = request.user.profile).order_by('-time')
     context ={
         'form_parents': form_parents,
     }
