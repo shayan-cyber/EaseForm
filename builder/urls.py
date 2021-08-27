@@ -11,5 +11,7 @@ urlpatterns =[
     path('responses/<int:pk>', views.responses, name='responses'),
     path('accept_responses_toggle/<int:pk>', views.accept_responses_toggle, name='accept_responses_toggle'),
     path('forms', views.forms, name='forms'),
-    path('delete_form/<int:pk>', views.delete_form, name='delete_form')
+    path('delete_form/<int:pk>', views.delete_form, name='delete_form'),
+    path('log_out', views.log_out, name='log_out'),
+    path('login_page', views.login_page, name='login_page'),
 ]

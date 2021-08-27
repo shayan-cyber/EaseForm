@@ -1,4 +1,5 @@
 {% load static %}
+{% load socialaccount %}
 <!doctype html>
 <html lang="en" class="h-100">
 
@@ -117,7 +118,14 @@
         <nav class="nav nav-masthead justify-content-center float-md-end">
           <a class="nav-link active" aria-current="page" href="#">Home</a>
           <a class="nav-link" href="{% url 'add_form_home' %}">Make Form</a>
-          <a class="nav-link" href="#">Sign Up</a>
+          
+          {% if request.user.is_authenticated %}
+          <a class="nav-link" href="#">{{request.user}}</a>
+          <a class="nav-link " aria-current="page" href="{% url 'log_out' %}">Log out</a>
+            {% else %}
+            <a class="nav-link" href="{% provider_login_url 'google' %}">Sign Up</a>
+          {% endif %}
+          
         </nav>
       </div>
     </header>
